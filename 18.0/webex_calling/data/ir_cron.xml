@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        Once a night is enough - and the hour matters.
+
+        Cisco serves call data for 720 hours. A job that runs nightly has
+        thirty nights of slack before anything is lost for good; one that
+        runs every five minutes only adds load and rate-limit pressure for
+        data that is not going anywhere.
+
+        What it must NOT do is skip. The sync therefore starts at the last
+        successful run, not at "today" - see WebexConnection.sync().
+    -->
+    <record id="cron_webex_sync" model="ir.cron">
+        <field name="name">Webex Calling: import call records</field>
+        <field name="model_id" ref="model_webex_connection"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_sync()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="nextcall" eval="(DateTime.now().replace(hour=23, minute=0, second=0) + timedelta(days=1)).strftime('%Y-%m-%d %H:%M:%S')"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <!--
+        A partner created today explains a call from yesterday. Without this
+        the number stays anonymous for ever, and that reads like a broken
+        integration when it is only a contact that arrived late.
+    -->
+    <record id="cron_webex_rematch" model="ir.cron">
+        <field name="name">Webex Calling: match unresolved callers again</field>
+        <field name="model_id" ref="model_webex_call"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_rematch()</field>
+        <field name="interval_number">6</field>
+        <field name="interval_type">hours</field>
+        <field name="active" eval="True"/>
+    </record>
+</odoo>

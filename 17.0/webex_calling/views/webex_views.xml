@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ============================================================ calls -->
+
+    <record id="view_webex_call_tree" model="ir.ui.view">
+        <field name="name">webex.call.tree</field>
+        <field name="model">webex.call</field>
+        <field name="arch" type="xml">
+            <tree string="Calls" create="false" edit="false"
+                  decoration-muted="not answered">
+                <field name="start_time"/>
+                <field name="direction"/>
+                <field name="other_party"/>
+                <field name="partner_id"/>
+                <field name="user_name"/>
+                <field name="location" optional="show"/>
+                <field name="ring_duration" sum="Ringing (s)" optional="hide"/>
+                <field name="duration" sum="Talk time (s)"/>
+                <field name="answered"/>
+                <field name="correlation_id" optional="hide"
+                       string="Call id (groups the rows of one call)"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_webex_call_search" model="ir.ui.view">
+        <field name="name">webex.call.search</field>
+        <field name="model">webex.call</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="other_party" string="Number"/>
+                <field name="partner_id"/>
+                <field name="user_name"/>
+                <filter name="inbound" string="Inbound"
+                        domain="[('direction','=','inbound')]"/>
+                <filter name="outbound" string="Outbound"
+                        domain="[('direction','=','outbound')]"/>
+                <separator/>
+                <filter name="missed" string="Not answered"
+                        domain="[('answered','=',False)]"/>
+                <!--
+                    Careful with this one: a hunt group writes a row per
+                    extension that rang, so "not answered" counted per ROW
+                    is not the number of missed CALLS. Use
+                    webex.call.count_conversations() for that figure.
+                -->
+                <separator/>
+                <filter name="unresolved" string="Caller unknown"
+                        domain="[('partner_id','=',False)]"/>
+                <group expand="0" string="Group by">
+                    <filter name="g_partner" string="Partner"
+                            context="{'group_by':'partner_id'}"/>
+                    <filter name="g_user" string="User"
+                            context="{'group_by':'user_name'}"/>
+                    <filter name="g_location" string="Location"
+                            context="{'group_by':'location'}"/>
+                    <filter name="g_day" string="Day"
+                            context="{'group_by':'start_time:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_call" model="ir.actions.act_window">
+        <field name="name">Calls</field>
+        <field name="res_model">webex.call</field>
+        <field name="view_mode">tree</field>
+        <field name="context">{'search_default_inbound': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No call records yet.</p>
+            <p>
+                Authorise a Webex connection and run the import. Cisco only
+                hands out the last 720 hours, so the first import reaches
+                back thirty days at most.
+            </p>
+        </field>
+    </record>
+
+    <!-- ====================================================== connections -->
+
+    <record id="view_webex_connection_form" model="ir.ui.view">
+        <field name="name">webex.connection.form</field>
+        <field name="model">webex.connection</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_authorize" type="object" string="Connect with Webex"
+                            class="btn-primary"
+                            invisible="refresh_token != False"/>
+                    <button name="action_authorize" type="object" string="Authorise again"
+                            invisible="refresh_token == False"/>
+                    <button name="action_sync" type="object" string="Import now"
+                            invisible="refresh_token == False"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1><field name="display_name" readonly="1"/></h1>
+                    </div>
+
+                    <div class="alert alert-info" role="status">
+                        Your Webex password is never asked for and never stored
+                        here. The sign-in happens at Cisco; this database only
+                        receives a token afterwards. All requested permissions
+                        are read-only.
+                    </div>
+
+                    <group>
+                        <group string="Integration (developer.webex.com)">
+                            <field name="client_id"/>
+                            <field name="client_secret" password="True"/>
+                            <field name="request_queue_names"/>
+                        </group>
+                        <group string="State">
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="org_id"/>
+                            <field name="last_sync"/>
+                            <field name="call_count"/>
+                            <field name="analytics_base"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+
+                    <div class="alert alert-danger" role="alert"
+                         invisible="last_error == False">
+                        <field name="last_error" readonly="1" nolabel="1"/>
+                    </div>
+
+                    <div class="alert alert-warning" role="alert">
+                        <strong>Redirect URI.</strong> Enter this in your Webex
+                        integration, character for character - Cisco compares
+                        it exactly:
+                        <code>&lt;your Odoo base URL&gt;/webex/callback</code>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_webex_connection_tree" model="ir.ui.view">
+        <field name="name">webex.connection.tree</field>
+        <field name="model">webex.connection</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="org_id"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="last_sync"/>
+                <field name="call_count"/>
+                <field name="last_error" decoration-danger="last_error != False"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_connection" model="ir.actions.act_window">
+        <field name="name">Webex connections</field>
+        <field name="res_model">webex.connection</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- ============================================================= menu -->
+
+    <menuitem id="menu_root" name="Webex Calling"/>
+    <menuitem id="menu_calls" parent="menu_root" action="action_call" sequence="10"/>
+    <menuitem id="menu_config" parent="menu_root" name="Configuration" sequence="90"
+              groups="base.group_system"/>
+    <menuitem id="menu_connections" parent="menu_config" action="action_connection" sequence="10"/>
+
+</odoo>
