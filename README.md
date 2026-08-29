@@ -187,11 +187,29 @@ a log you cannot read is not an audit trail.
 
 * This module is written against Cisco's documented behaviour and our own
   production experience with exactly these endpoints — the traps in the
-  table above are ones we have actually walked into. **The Odoo code itself
-  has not yet been installed and run on a live database, and it ships with
-  no test suite.** Treat the first install as a pilot, not as a release.
-  Read the code before you trust it with a customer — that is what LGPL is
-  for, and every non-obvious decision is commented with its reason.
+  table above are ones we have actually walked into.
+* **What is tested:** 27 offline tests, green against both version trees
+  (see below). They cover the parts where being wrong is silent — column
+  spellings, direction, answered, timestamps, number variants, the 12-hour
+  slicing, the retention clamp, the scope lists.
+* **What is not tested:** Odoo itself. The ORM, the views, the access rules
+  and the cron have **not** been run on a live database. Treat the first
+  install as a pilot, not as a release. Read the code before you trust it
+  with a customer — that is what LGPL is for, and every non-obvious
+  decision is commented with its reason.
+
+## Tests
+
+```bash
+pip install requests
+python -m unittest discover -s tests -v
+WEBEX_TREE=17.0 python -m unittest discover -s tests
+```
+
+No Odoo needed: `tests/odoo_stub.py` provides just enough of the framework
+to import the models. Running the same suite against `17.0` is what proves
+`make-17.sh` did not change behaviour — the one risk a generated copy
+actually carries.
 * Pull requests welcome, especially: other countries' number variants in
   `_variants()`, and Odoo 16 compatibility.
 
