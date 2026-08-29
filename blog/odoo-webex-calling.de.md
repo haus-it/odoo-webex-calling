@@ -200,3 +200,6 @@ Fragen zu Webex Calling, zu Placetel, zu einer Anbindung, die es noch nicht
 gibt — oder wenn das lieber jemand anderes betreiben soll:
 
 **+49 5251 2020505** · **[www.haus-it.de/support](https://www.haus-it.de/support)**
+
+Deutschland [haus-it.de](https://www.haus-it.de) · Österreich
+[haus-it.at](https://www.haus-it.at) · Spanien [casa-it.es](https://www.casa-it.es)

@@ -6,7 +6,10 @@ question *"who is calling?"* while the phone is still ringing.
 
 Licensed LGPL-3, like Odoo itself. Built and maintained by
 [haus iT](https://www.haus-it.de) (Mentor GmbH, Paderborn), who run this
-against real customer organisations every night.
+against real customer organisations every night - in Germany
+([haus-it.de](https://www.haus-it.de)), Austria
+([haus-it.at](https://www.haus-it.at)) and Spain
+([casa-it.es](https://www.casa-it.es)).
 
 ---
 
