@@ -26,8 +26,12 @@ class WebexCall(models.Model):
     correlation_id = fields.Char(index=True, readonly=True)
 
     start_time = fields.Datetime(index=True, readonly=True)
+    answer_time = fields.Datetime(readonly=True)
     duration = fields.Integer(readonly=True, help="Seconds of conversation.")
     ring_duration = fields.Integer(readonly=True, help="Seconds of ringing.")
+
+    call_type = fields.Char(readonly=True)
+    call_outcome = fields.Char(readonly=True)
 
     direction = fields.Selection(
         [("inbound", "Inbound"), ("outbound", "Outbound")],
@@ -42,7 +46,7 @@ class WebexCall(models.Model):
              "can be matched against.")
 
     user_name = fields.Char(readonly=True)
-    user_email = fields.Char(readonly=True)
+    user_uuid = fields.Char(readonly=True)
     location = fields.Char(readonly=True)
 
     partner_id = fields.Many2one("res.partner", index=True, ondelete="set null")
@@ -69,16 +73,19 @@ class WebexCall(models.Model):
         if not rows:
             return 0
 
+        incoming = [_report_id(row) for row in rows]
+
         known = set(self.search([
             ("connection_id", "=", connection.id),
-            ("report_id", "in", [r.get("Report ID") for r in rows if r.get("Report ID")]),
+            ("report_id", "in", [i for i in incoming if i]),
         ]).mapped("report_id"))
 
         values = []
 
-        for row in rows:
-            report_id = row.get("Report ID")
-
+        for row, report_id in zip(rows, incoming):
+            # No identifier means we could not deduplicate it, and a record
+            # that gets imported again on every run is worse than a missing
+            # one: it inflates every count that follows.
             if not report_id or report_id in known:
                 continue
 
@@ -99,28 +106,40 @@ class WebexCall(models.Model):
         # "TERMINATING" for one they received. The words describe the leg,
         # not the business meaning, and swapping them inverts every
         # reachability figure you will ever build on this table.
-        direction = (row.get("Direction") or "").strip().lower()
-        inbound = direction == "terminating"
+        direction = _get(row, "Direction", "direction").strip().upper()
+        inbound = direction == "TERMINATING"
 
-        calling = (row.get("Calling number") or "").strip()
-        called = (row.get("Called number") or "").strip()
+        calling = _get(row, "Calling number", "callingNumber").strip()
+        called = _get(row, "Called number", "calledNumber").strip()
+
+        # ANSWERED IS NOT JUST THE "Answered" FLAG.
+        #
+        # Some records carry an answer time and no flag. Reading only the
+        # flag turns those into missed calls - which is the one direction
+        # that makes a reachability figure look worse than reality, and
+        # nobody questions a bad number.
+        answer_time = _parse_time(_get(row, "Answer time", "answerTime"))
+        answered = bool(answer_time) or _get(
+            row, "Answered", "answered").strip().lower() in ("true", "yes", "1")
 
         return {
             "connection_id": connection.id,
-            "report_id": row.get("Report ID"),
-            "correlation_id": row.get("Correlation ID") or None,
-            "start_time": _parse_time(row.get("Start time")),
-            "duration": _int(row.get("Duration")),
-            "ring_duration": _int(row.get("Ring duration")),
+            "report_id": _report_id(row),
+            "correlation_id": _get(row, "Correlation ID", "correlationId") or None,
+            "start_time": _parse_time(_get(row, "Start time", "startTime")),
+            "answer_time": answer_time,
+            "duration": _int(_get(row, "Duration", "duration")),
+            "ring_duration": _int(_get(row, "Ring duration", "ringDuration")),
             "direction": "inbound" if inbound else "outbound",
-            "answered": (row.get("Answered") or "").strip().lower()
-                        in ("true", "yes", "1"),
+            "answered": answered,
             "calling_number": calling or False,
             "called_number": called or False,
             "other_party": (calling if inbound else called) or False,
-            "user_name": row.get("User") or False,
-            "user_email": row.get("User email") or row.get("Email address") or False,
-            "location": row.get("Location") or False,
+            "user_name": _get(row, "User", "user") or False,
+            "user_uuid": _get(row, "User UUID", "userUuid") or False,
+            "call_type": _get(row, "Call type", "callType") or False,
+            "call_outcome": _get(row, "Call outcome", "callOutcome") or False,
+            "location": _get(row, "Location", "location") or False,
         }
 
     def _match_partners(self):
@@ -198,6 +217,37 @@ class WebexCall(models.Model):
             "view_mode": "form",
             "name": _("Caller"),
         }
+
+
+def _get(row, *keys):
+    """Read one CDR field, whichever spelling this organisation gets.
+
+    THIS IS NOT DEFENSIVE PROGRAMMING, IT IS NECESSARY.
+    The same feed hands out ``Report ID`` in one place and ``reportId`` in
+    another, depending on API version and region. Code that knows only one
+    spelling does not crash - it silently reads an empty column and writes
+    empty records, and the import log says "1,400 rows imported".
+
+    An empty string counts as absent. Cisco fills unused columns with "",
+    not with null.
+    """
+    for key in keys:
+        value = row.get(key)
+
+        if value not in (None, ""):
+            return value if isinstance(value, str) else str(value)
+
+    return ""
+
+
+def _report_id(row):
+    """The identifier this record is deduplicated by.
+
+    ``Call ID`` first, because that is what our own production importer has
+    used since day one; ``Report ID`` as the fallback. Both are unique per
+    record - what they are NOT is unique per call. See count_conversations().
+    """
+    return _get(row, "Call ID", "callId", "Report ID", "reportId") or False
 
 
 def _parse_time(value):

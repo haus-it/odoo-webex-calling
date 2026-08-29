@@ -113,9 +113,19 @@ Set a shared secret once:
 ```bash
 curl -X POST https://your-odoo/webex/lookup \
      -H 'Content-Type: application/json' \
-     -d '{"jsonrpc":"2.0","method":"call","params":{
-           "number":"+4952512020808","token":"YOUR_SECRET"}}'
+     -d '{"number":"+4952512020808","token":"YOUR_SECRET"}'
 ```
+
+```json
+{"found": true, "id": 42, "name": "Erika Beispiel",
+ "company": "Muster GmbH", "url": "https://your-odoo/odoo/contacts/42"}
+```
+
+A plain HTTP route with a JSON body, deliberately — not JSON-RPC. Odoo
+renamed the JSON route type between releases, and a switchboard should not
+have to build an envelope to ask one question. A wrong or missing token
+gets **401** and nothing else; the three ways of being wrong are not told
+apart.
 
 It answers with name, company and a link — and nothing else. A screen pop is
 read in one second by whoever happens to be standing at the desk; the

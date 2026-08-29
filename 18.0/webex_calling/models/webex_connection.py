@@ -17,7 +17,9 @@ _logger = logging.getLogger(__name__)
 class WebexConnection(models.Model):
     _name = "webex.connection"
     _description = "Webex Calling connection"
-    _rec_name = "display_name"
+
+    # NOTE: no _rec_name = "display_name" here. display_name is *derived*
+    # from _rec_name, so pointing one at the other is a loop.
 
     active = fields.Boolean(default=True)
     company_id = fields.Many2one(
@@ -51,12 +53,26 @@ class WebexConnection(models.Model):
     last_error = fields.Char(readonly=True, copy=False)
     call_count = fields.Integer(compute="_compute_call_count")
 
-    @api.depends("company_id")
+    # WHY A SEPARATE FLAG INSTEAD OF TESTING refresh_token IN THE VIEW
+    # A field the view switches on has to be IN the view, and the refresh
+    # token has no business being sent to a browser - not even an
+    # administrator’s. This carries the one bit the form actually needs.
+    is_connected = fields.Boolean(compute="_compute_is_connected")
+
+    @api.depends("refresh_token")
+    def _compute_is_connected(self):
+        for record in self:
+            record.is_connected = bool(record.sudo().refresh_token)
+
+    # Not stored, so it is recomputed on every read - which is what we
+    # want here. The depends is on the record itself; depending on the
+    # calls would rewrite this on every import for no benefit.
     def _compute_call_count(self):
         for record in self:
             record.call_count = self.env["webex.call"].search_count(
                 [("connection_id", "=", record.id)])
 
+    @api.depends("org_id")
     def _compute_display_name(self):
         for record in self:
             record.display_name = record.org_id or _("not connected yet")
