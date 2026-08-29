@@ -168,7 +168,8 @@
 
     <!-- ============================================================= menu -->
 
-    <menuitem id="menu_root" name="Webex Calling"/>
+    <menuitem id="menu_root" name="Webex Calling"
+              web_icon="webex_calling,static/description/icon.png"/>
     <menuitem id="menu_calls" parent="menu_root" action="action_call" sequence="10"/>
     <menuitem id="menu_config" parent="menu_root" name="Configuration" sequence="90"
               groups="base.group_system"/>
