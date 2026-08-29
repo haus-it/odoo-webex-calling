@@ -1,0 +1,5 @@
+# Keep line endings stable in the repository, whatever the checkout.
+# Python and XML with CRLF sneaked in from a Windows workstation is the
+# kind of diff nobody reviews and everybody trips over.
+* text=auto eol=lf
+*.png binary

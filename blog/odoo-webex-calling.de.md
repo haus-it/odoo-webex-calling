@@ -101,10 +101,10 @@ Apparat**. Bei einem unserer Kunden bestand ein einziges Gespräch aus
 siebzehn Datensätzen: sechzehn Kollegen, die nicht abgenommen haben, und
 einer, der abgenommen hat.
 
-Wer Zeilen zählt, liest eine Rufgruppe als Wand verpasster Anrufe. In den
-Zahlen eines Kunden waren es 132.518 Datensätze für 17.561 Gespräche — der
-Faktor 7,5. Eine Kennzahl „verpasste Anrufe", die daraus entsteht, ist nicht
-ungenau, sie ist falsch.
+Wer Zeilen zählt, liest eine Rufgruppe als Wand verpasster Anrufe. Über
+einen kompletten Datenbestand gemessen lagen bei uns **7,5 Datensätze auf
+einem Gespräch**. Eine Kennzahl „verpasste Anrufe", die daraus entsteht, ist
+nicht ungenau — sie ist falsch.
 
 Die Klammer um die Zeilen ist die `Correlation ID`. Im Modul steht dafür
 `webex.call.count_conversations()`, und der Kommentar darüber erklärt,
