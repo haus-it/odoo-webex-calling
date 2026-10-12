@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+# Copyright (c) 2026 Mentor GmbH, Am Hoppenhof 30a, 33104 Paderborn
+# Haus iT Caller ID - https://hausit-portal.de
+#
+# Veroeffentlicht unter der GNU Lesser General Public License v3.
+# Siehe LICENSE im selben Verzeichnis.
 {
     "name": "Webex Calling Connector",
     "summary": "Connect Odoo to Cisco Webex Calling: import call detail "
@@ -29,7 +34,10 @@ than that cannot be filled afterwards - see the README.
 """,
     "author": "haus iT / Mentor GmbH",
     "website": "https://www.haus-it.de",
-    "support": "https://www.haus-it.de/support",
+    # The Odoo Apps store expects an e-mail address here, not a web page.
+    "support": "callerid@haus-it.de",
+    # First entry is the cover the store shows in its listing.
+    "images": ["static/description/banner.png"],
     "license": "LGPL-3",
     "category": "Productivity/Telephony",
     "version": "18.0.1.0.0",

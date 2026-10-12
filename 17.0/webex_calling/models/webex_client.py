@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+# Copyright (c) 2026 Mentor GmbH, Am Hoppenhof 30a, 33104 Paderborn
+# Haus iT Caller ID - https://hausit-portal.de
+#
+# Veroeffentlicht unter der GNU Lesser General Public License v3.
+# Siehe LICENSE im selben Verzeichnis.
 """A small, honest HTTP client for the Cisco Webex Calling APIs.
 
 Everything in this file was learned the hard way while running this against
