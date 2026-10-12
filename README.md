@@ -35,7 +35,7 @@ module is mostly those facts, written down in code:
 * **Nightly import** of call detail records into `webex.call`, catching up
   from the last successful run rather than "today".
 * **Caller matching** against `res.partner`, trying several spellings of the
-  same number (`+4952512020808`, `05251 2020808`, …). Two partners sharing a
+  same number (`+493023125000`, `030 23125000`, …). Two partners sharing a
   number produce **no** match — a confident wrong name is worse than none.
 * **A lookup endpoint** (`POST /webex/lookup`) so a phone system, a Webex
   embedded app or any screen-pop tool can ask Odoo who is calling.
@@ -116,7 +116,7 @@ Set a shared secret once:
 ```bash
 curl -X POST https://your-odoo/webex/lookup \
      -H 'Content-Type: application/json' \
-     -d '{"number":"+4952512020808","token":"YOUR_SECRET"}'
+     -d '{"number":"+493023125000","token":"YOUR_SECRET"}'
 ```
 
 ```json

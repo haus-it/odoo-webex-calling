@@ -173,9 +173,9 @@ class NumberVariants(unittest.TestCase):
     """The same telephone, spelled the ways a CRM might hold it."""
 
     def test_german_international_to_national(self):
-        got = connection._variants("4952512020808")
-        self.assertIn("+4952512020808", got)
-        self.assertIn("052512020808", got)
+        got = connection._variants("493023125000")
+        self.assertIn("+493023125000", got)
+        self.assertIn("03023125000", got)
 
     def test_national_to_international(self):
         got = connection._variants("05251202080")
@@ -183,12 +183,12 @@ class NumberVariants(unittest.TestCase):
         self.assertIn("495251202080", got)
 
     def test_last_eight_digits_are_offered_last(self):
-        got = connection._variants("4952512020808")
-        self.assertIn("12020808", got)
-        self.assertEqual(got[-1], "12020808")
+        got = connection._variants("493023125000")
+        self.assertIn("23125000", got)
+        self.assertEqual(got[-1], "23125000")
 
     def test_no_duplicates(self):
-        got = connection._variants("4952512020808")
+        got = connection._variants("493023125000")
         self.assertEqual(len(got), len(set(got)))
 
 

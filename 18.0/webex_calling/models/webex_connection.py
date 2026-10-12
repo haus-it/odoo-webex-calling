@@ -222,7 +222,7 @@ class WebexConnection(models.Model):
 
         Deliberately tries several spellings instead of demanding one.
         A CRM stores what somebody typed; a phone system reports E.164.
-        "+4952512020808" and "05251 2020808" are the same telephone and two
+        "+493023125000" and "030 23125000" are the same telephone and two
         different strings, and only one side of that can be fixed.
         """
         partner = self.env["res.partner"]

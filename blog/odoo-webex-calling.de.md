@@ -185,7 +185,10 @@ Zustimmung des Betriebsrats (§ 87 Abs. 1 Nr. 6 BetrVG).
 Und eine offene Angabe zum Reifegrad: Die beschriebenen Webex-Fallen stammen
 aus dem Wirkbetrieb, dagegen haben wir uns tatsächlich gestoßen. **Der
 Odoo-Code selbst ist noch nicht auf einer laufenden Datenbank installiert
-worden und bringt keine Testsuite mit.** Behandeln Sie die erste
+worden.** Mitgeliefert werden 27 Tests, die ohne Odoo laufen und die
+Stellen prüfen, an denen ein Fehler still bliebe – Spaltennamen, Richtung,
+Zeitstempel, Rufnummernvarianten, das Zwölf-Stunden-Fenster. Die Masken, die
+Rechte und der nächtliche Lauf sind damit nicht geprüft. Behandeln Sie die erste
 Installation als Pilot. Der Quelltext ist offen, jede nicht offensichtliche
 Entscheidung steht als Kommentar daneben — genau dafür ist LGPL da.
 
