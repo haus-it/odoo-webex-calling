@@ -51,20 +51,15 @@ module is mostly those facts, written down in code:
 
 ## Install
 
-The repository carries one tree per Odoo release. Point your addons path at
-the one you run:
-
-```
-odoo-webex-calling/
-├── 17.0/webex_calling/     ← Odoo 17 (Community and Enterprise)
-├── 18.0/webex_calling/     ← Odoo 18 (Community and Enterprise)
-└── tools/make-17.sh        ← regenerates 17.0 from 18.0
-```
+This branch carries the module for **Odoo 18** at the repository root - the
+layout the Odoo Apps store expects. Development happens on the `main`
+branch, which holds both version trees, the tests and the script that
+generates one tree from the other.
 
 ```bash
-git clone https://github.com/haus-it/odoo-webex-calling.git
+git clone -b 18.0 https://github.com/haus-it/odoo-webex-calling.git
 pip install requests
-# then add odoo-webex-calling/18.0 (or /17.0) to addons_path
+# then add the cloned folder to addons_path
 ```
 
 Update the apps list and install **Webex Calling Connector**.
@@ -72,13 +67,6 @@ Update the apps list and install **Webex Calling Connector**.
 **Community and Enterprise** both work: the module depends only on `base`,
 `mail` and `phone_validation`, all of which ship with Community. It adds no
 Enterprise-only widgets, so nothing degrades on either edition.
-
-The two version trees differ in exactly four mechanical places — the list
-view tag, `view_mode`, and two web-client URLs. `17.0/` is therefore
-**generated**, not hand-maintained: change `18.0/`, run `sh tools/make-17.sh`,
-commit both. Two hand-kept copies would drift apart on the first bug fix,
-and the drift would stay invisible until a customer on the older release hit
-it.
 
 ## Set up
 
@@ -195,18 +183,11 @@ language too - a log you cannot read is not an audit trail.
 
 ## Tests
 
-```bash
-pip install requests
-python -m unittest discover -s tests -v
-WEBEX_TREE=17.0 python -m unittest discover -s tests
-```
+The offline test suite lives on the `main` branch (`tests/`), together with
+the instructions to run it against both version trees.
 
-No Odoo needed: `tests/odoo_stub.py` provides just enough of the framework
-to import the models. Running the same suite against `17.0` is what proves
-`make-17.sh` did not change behaviour — the one risk a generated copy
-actually carries.
-* Pull requests welcome, especially: other countries' number variants in
-  `_variants()`, and Odoo 16 compatibility.
+* Pull requests welcome on `main`, especially: other countries' number
+  variants in `_variants()`, and Odoo 16 compatibility.
 
 ## Support
 
