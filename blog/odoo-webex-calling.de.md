@@ -148,29 +148,26 @@ Benutzer aus — und zeigt beim Klingeln, wer dran ist.
 
 ### Welche Systeme sonst noch angebunden sind
 
-Neben Odoo: **SAP Cloud for Customer, HubSpot, Pipedrive, Zoho CRM,
-monday.com, Microsoft 365 (Outlook), Microsoft Dynamics 365 Business
-Central, lexoffice (Lexware Office), sevdesk, casavi, Propstack** und
-**Freshdesk**. Das Anbindungsformat ist beschreibend statt programmiert —
-ein neues System ist eine Beschreibungsdatei, keine Auslieferung.
+Neben Odoo verbindet das Portal eine Reihe von CRM-, ERP- und
+Helpdesk-Systemen. Das Anbindungsformat ist beschreibend statt programmiert –
+ein neues System ist eine Beschreibungsdatei, keine Auslieferung. Die aktuelle
+Liste steht auf der Website; hier wiederholen wir sie nicht, weil eine Liste
+in einem Beitrag am Tag nach dem Schreiben veraltet ist.
 
-**Telefonie:** Webex Calling, Microsoft Teams Phone und
-**[Placetel](https://www.placetel.de/preise?ref=7x8t2xyViH4qTQWErm2aUxhSUesQggDi)**
-— ab 6,90 € je Benutzer und Monat, „Webex für Placetel" ab 14,90 €. Placetel
-selbst verbindet Microsoft Teams, HubSpot, Salesforce, DATEV, Freshdesk,
-monday.com, Zoho, Pipedrive, Miro und Slido.
+**Telefonie:** Das Portal arbeitet mit Cisco Webex Calling.
 
-### In 19 Sprachen
+Wer noch eine Telefonanlage sucht: Wir empfehlen
+**[Placetel](https://www.placetel.de/preise?ref=7x8t2xyViH4qTQWErm2aUxhSUesQggDi)**,
+auch „Webex für Placetel". **Das ist ein Empfehlungslink:** Schließen Sie
+darüber ab, erhalten wir eine Vergütung. Für Sie kostet es nichts zusätzlich,
+und Sie können ebenso gut direkt zu placetel.de gehen.
 
-Das Portal ist **vollständig** übersetzt — nicht teilweise, und nachgezählt
-statt behauptet: 1.632 von 1.632 Texten in jeder einzelnen Sprache.
+### Sprachen
 
-> Dansk · Deutsch · English · Español · Français · Italiano · Lietuvių ·
-> Magyar · Nederlands · Norsk · Polski · Română · Slovenčina · Suomi ·
-> Svenska · Türkçe · Čeština · Русский · Українська
-
-Datum, Zahlenformat und das Zugriffsprotokoll folgen der Sprache des Lesers
-mit. Ein Protokoll, das man nicht lesen kann, ist kein Nachweis.
+Das Portal ist in viele europäische Sprachen übersetzt; die aktuelle Liste
+steht auf der Website. Datum, Zahlenformat und das Zugriffsprotokoll folgen
+der Sprache des Lesers mit. Ein Protokoll, das man nicht lesen kann, ist kein
+Nachweis.
 
 ---
 

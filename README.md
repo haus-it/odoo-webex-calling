@@ -156,30 +156,25 @@ the caller's name in the Webex client while the phone rings.
 
 ### Other systems that can be connected
 
-Beyond Odoo, hausit-portal.de currently connects: **SAP Cloud for Customer,
-HubSpot, Pipedrive, Zoho CRM, monday.com, Microsoft 365 (Outlook),
-Microsoft Dynamics 365 Business Central, lexoffice (Lexware Office),
-sevdesk, casavi, Propstack and Freshdesk** — with a described-not-programmed
-connector format, so a new system is a description file rather than a
-release.
+Beyond Odoo, hausit-portal.de connects a range of CRM, ERP and helpdesk
+systems - with a described-not-programmed connector format, so a new system
+is a description file rather than a release. The current list is on the
+website; we do not repeat it here, because a list in a README is out of date
+the day after it is written.
 
-**Telephony:** Webex Calling, Microsoft Teams Phone and
-[Placetel](https://www.placetel.de/preise?ref=7x8t2xyViH4qTQWErm2aUxhSUesQggDi)
-(from €6.90 per user per month; "Webex für Placetel" from €14.90). Placetel
-itself connects Microsoft Teams, HubSpot, Salesforce, DATEV, Freshdesk,
-monday.com, Zoho, Pipedrive, Miro and Slido.
+**Telephony:** the portal works with Cisco Webex Calling.
 
-### Available in 19 languages
+If you are still choosing a phone system, we recommend
+[Placetel](https://www.placetel.de/preise?ref=7x8t2xyViH4qTQWErm2aUxhSUesQggDi),
+including "Webex für Placetel". **This is a referral link:** we receive a
+commission if you sign up through it. It costs you nothing extra, and you
+are welcome to go to placetel.de directly instead.
 
-The portal is fully translated — not partly, and measured rather than
-claimed: 1,632 of 1,632 texts in every one of them.
+### Languages
 
-Dansk · Deutsch · English · Español · Français · Italiano · Lietuvių ·
-Magyar · Nederlands · Norsk · Polski · Română · Slovenčina · Suomi ·
-Svenska · Türkçe · Čeština · Русский · Українська
-
-Dates, number formats and the audit log follow the reader's language too —
-a log you cannot read is not an audit trail.
+The portal is translated into many European languages; the current list is
+on the website. Dates, number formats and the audit log follow the reader's
+language too - a log you cannot read is not an audit trail.
 
 ---
 
