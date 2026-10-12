@@ -1,4 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_webex_connection_admin,webex.connection admin,model_webex_connection,base.group_system,1,1,1,1
-access_webex_call_user,webex.call user,model_webex_call,base.group_user,1,0,0,0
-access_webex_call_admin,webex.call admin,model_webex_call,base.group_system,1,1,1,1
